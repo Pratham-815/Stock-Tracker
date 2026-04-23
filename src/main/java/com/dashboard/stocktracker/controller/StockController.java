@@ -1,5 +1,6 @@
 package com.dashboard.stocktracker.controller;
 
+import com.dashboard.stocktracker.dto.StockOverviewResponse;
 import com.dashboard.stocktracker.dto.StockResponse;
 import com.dashboard.stocktracker.service.StockService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,5 +21,10 @@ public class StockController {
     @GetMapping("/{stockSymbol}")
     public StockResponse getStock(@PathVariable String stockSymbol){
         return stockService.getStockForSymbol(stockSymbol.toUpperCase());
+    }
+
+    @GetMapping("/{stockSymbol}/overview")
+    public StockOverviewResponse getStockOverview(@PathVariable String stockSymbol){
+        return stockService.getStockOverviewForSymbol(stockSymbol.toUpperCase());
     }
 }

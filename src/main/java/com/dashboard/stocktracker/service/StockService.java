@@ -2,6 +2,7 @@ package com.dashboard.stocktracker.service;
 
 import com.dashboard.stocktracker.client.StockClient;
 import com.dashboard.stocktracker.dto.AlphaVantageResponse;
+import com.dashboard.stocktracker.dto.StockOverviewResponse;
 import com.dashboard.stocktracker.dto.StockResponse;
 import org.springframework.stereotype.Service;
 
@@ -26,5 +27,9 @@ public class StockService {
                 .price(Double.parseDouble(response.globalQuote().price()))
                 .lastUpdated(response.globalQuote().lastTradingDay())
                 .build();
+    }
+
+    public StockOverviewResponse getStockOverviewForSymbol(String symbol){
+        return stockClient.getStockOverview(symbol);
     }
 }
