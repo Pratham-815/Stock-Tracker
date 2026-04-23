@@ -1,12 +1,12 @@
 package com.dashboard.stocktracker.controller;
 
+import com.dashboard.stocktracker.dto.DailyStockResponse;
 import com.dashboard.stocktracker.dto.StockOverviewResponse;
 import com.dashboard.stocktracker.dto.StockResponse;
 import com.dashboard.stocktracker.service.StockService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/stocks")
@@ -26,5 +26,13 @@ public class StockController {
     @GetMapping("/{stockSymbol}/overview")
     public StockOverviewResponse getStockOverview(@PathVariable String stockSymbol){
         return stockService.getStockOverviewForSymbol(stockSymbol.toUpperCase());
+    }
+
+    @GetMapping("/{stockSymbol}/history")
+    public List<DailyStockResponse> getStockHistory(
+            @PathVariable String stockSymbol,
+            @RequestParam(defaultValue = "30") int days
+    ){
+        return stockService.getHistory(stockSymbol.toUpperCase(), days);
     }
 }

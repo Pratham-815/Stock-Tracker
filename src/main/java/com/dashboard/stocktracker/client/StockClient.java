@@ -1,6 +1,7 @@
 package com.dashboard.stocktracker.client;
 
 import com.dashboard.stocktracker.dto.AlphaVantageResponse;
+import com.dashboard.stocktracker.dto.StockHistoryResponse;
 import com.dashboard.stocktracker.dto.StockOverviewResponse;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -40,6 +41,18 @@ public class StockClient {
                         .build())
                 .retrieve()
                 .bodyToMono(StockOverviewResponse.class)
+                .block();
+    }
+
+    public StockHistoryResponse getStockHistory(String symbol){
+        return webClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .queryParam("function", "TIME_SERIES_DAILY")
+                        .queryParam("symbol", symbol)
+                        .queryParam("apikey", apiKey)
+                        .build())
+                .retrieve()
+                .bodyToMono(StockHistoryResponse.class)
                 .block();
     }
 }
