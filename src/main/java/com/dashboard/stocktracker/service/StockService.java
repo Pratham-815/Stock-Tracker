@@ -2,7 +2,10 @@ package com.dashboard.stocktracker.service;
 
 import com.dashboard.stocktracker.client.StockClient;
 import com.dashboard.stocktracker.dto.*;
+import com.dashboard.stocktracker.entity.FavouriteStock;
+import com.dashboard.stocktracker.repository.FavouriteStockRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -11,9 +14,11 @@ import java.util.stream.Collectors;
 public class StockService {
 
     private StockClient stockClient;
+    private FavouriteStockRepository favouriteStockRepository;
 
-    public StockService(StockClient stockClient){
+    public StockService(StockClient stockClient, FavouriteStockRepository favouriteStockRepository){
         this.stockClient = stockClient;
+        this.favouriteStockRepository = favouriteStockRepository;
     }
 
     public StockResponse getStockForSymbol(String stockSymbol){
@@ -53,4 +58,18 @@ public class StockService {
                 })
                 .collect(Collectors.toList());
     }
+
+    @Transactional
+    public FavouriteStock addFavourite(String symbol){
+        if(favouriteStockRepository.existsBySymbol(symbol)){
+            throw new RuntimeException("Favourite stock already exists in the list");
+        }
+
+        FavouriteStock favourite = FavouriteStock.builder()
+                .symbol(symbol)
+                .build();
+
+        return favouriteStockRepository.save(favourite);
+    }
+
 }

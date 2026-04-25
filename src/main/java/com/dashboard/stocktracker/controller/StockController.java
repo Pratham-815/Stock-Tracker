@@ -3,7 +3,9 @@ package com.dashboard.stocktracker.controller;
 import com.dashboard.stocktracker.dto.DailyStockResponse;
 import com.dashboard.stocktracker.dto.StockOverviewResponse;
 import com.dashboard.stocktracker.dto.StockResponse;
+import com.dashboard.stocktracker.entity.FavouriteStock;
 import com.dashboard.stocktracker.service.StockService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,5 +36,11 @@ public class StockController {
             @RequestParam(defaultValue = "30") int days
     ){
         return stockService.getHistory(stockSymbol.toUpperCase(), days);
+    }
+
+    @PostMapping("/favourites")
+    public ResponseEntity<FavouriteStock> saveFavouriteStock(@RequestBody FavouriteStock stock ){
+        FavouriteStock saved = stockService.addFavourite(stock.getSymbol());
+        return ResponseEntity.ok(saved);
     }
 }
