@@ -3,6 +3,7 @@ package com.dashboard.stocktracker.service;
 import com.dashboard.stocktracker.client.StockClient;
 import com.dashboard.stocktracker.dto.*;
 import com.dashboard.stocktracker.entity.FavouriteStock;
+import com.dashboard.stocktracker.exception.FavouriteAlreadyExistsException;
 import com.dashboard.stocktracker.repository.FavouriteStockRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,7 +63,7 @@ public class StockService {
     @Transactional
     public FavouriteStock addFavourite(String symbol){
         if(favouriteStockRepository.existsBySymbol(symbol)){
-            throw new RuntimeException("Favourite stock already exists in the list");
+            throw new FavouriteAlreadyExistsException(symbol);
         }
 
         FavouriteStock favourite = FavouriteStock.builder()
