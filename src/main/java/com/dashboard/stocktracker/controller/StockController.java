@@ -43,4 +43,9 @@ public class StockController {
         FavouriteStock saved = stockService.addFavourite(stock.getSymbol());
         return ResponseEntity.ok(saved);
     }
+
+    @GetMapping("/favourites")
+    public List<StockResponse> getFavouritesWithPrices(){
+        return stockService.getFavouritesWithLivePrices();
+    }
 }
