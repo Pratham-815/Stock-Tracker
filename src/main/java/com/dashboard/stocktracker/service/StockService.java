@@ -5,6 +5,7 @@ import com.dashboard.stocktracker.dto.*;
 import com.dashboard.stocktracker.entity.FavouriteStock;
 import com.dashboard.stocktracker.exception.FavouriteAlreadyExistsException;
 import com.dashboard.stocktracker.repository.FavouriteStockRepository;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +24,7 @@ public class StockService {
         this.favouriteStockRepository = favouriteStockRepository;
     }
 
+    @Cacheable(value = "stocks", key = "#stockSymbol")
     public StockResponse getStockForSymbol(String stockSymbol){
         try {
             AlphaVantageResponse response = stockClient.getStockQuote(stockSymbol);
